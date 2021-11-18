@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ public class LevelConfig : ScriptableObject
 
     public Level GetLevelByIndex(int index)
     {
-        if(_allLevel == null || _allLevel.Count == 0)
+        if (_allLevel == null || _allLevel.Count == 0)
         {
             return null;
         }

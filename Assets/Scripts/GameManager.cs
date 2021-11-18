@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -34,7 +31,7 @@ public class GameManager : MonoBehaviour
     private void CreateLevel(int level)
     {
         Level _level = levelConfig.GetLevelByIndex(level);
-        if(_level != null)
+        if (_level != null)
         {
             InstantiateLevel(_level);
         }
@@ -42,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     private void InstantiateLevel(Level level)
     {
-        if(currentLevelInstance != null)
+        if (currentLevelInstance != null)
         {
             Destroy(currentLevelInstance.gameObject);
         }
