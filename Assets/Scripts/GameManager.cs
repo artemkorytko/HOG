@@ -4,7 +4,7 @@ public class GameManager : MonoBehaviour
 {
     private const string LEVEL_SAVE_KEY = "level_index";
 
-    [SerializeField] private LevelConfig _levelConfig;
+    [SerializeField] private LevelConfig levelConfig;
     
     private int _currentLevel;
     private Levels _currentLevelInstance;
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     private void CreateLevel(int levelIndex)
     {
-        Levels level = _levelConfig.GetLevelByIndex(levelIndex);
+        Levels level = levelConfig.GetLevelByIndex(levelIndex);
         if (level != null)
         {
             InstantiateLevel(level);
