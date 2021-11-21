@@ -1,53 +1,91 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private const string LEVEL_SAVE_KEY = "level_index";
+    [Header("Levels")]
+    [SerializeField] private List<Level> _allLevels = null;
 
-    [SerializeField] private LevelConfig levelConfig;
+    [Header("UI")]
+    [SerializeField] private GameObject _mainScreen = null;
+    [SerializeField] private UIGameScreen _gameScreen = null;
+    [SerializeField] private GameObject _winScreen = null;
 
-    private int currentLevel;
-    private Level currentLevelInstance;
+    private Level _currentLevel = null;
+    private int _currentLevelIndex = 0;
 
-    public int CurrentLevel
+    public int LevelIndex => _currentLevelIndex + 1;
+    public Level Level => _currentLevel;
+
+    private void Awake()
     {
-        get 
-        {
-            return PlayerPrefs.GetInt(LEVEL_SAVE_KEY, 0);
-        }
-        set 
-        {
-            PlayerPrefs.SetInt(LEVEL_SAVE_KEY, value);
-            PlayerPrefs.Save();
-        }
+        LoadData();
+        CreateLevel();
+        InitializeUI();
     }
 
-    private void Start()
+    private void LoadData()
     {
-        currentLevel = CurrentLevel;
-        CreateLevel(currentLevel);
+        _currentLevelIndex = PlayerPrefs.GetInt("level_index", 0);
     }
 
-    private void CreateLevel(int level)
+    private void CreateLevel()
     {
-        Level _level = levelConfig.GetLevelByIndex(level);
-        if(_level != null)
-        {
-            InstantiateLevel(_level);
-        }
+        _currentLevel = InstantiateLevel(_currentLevelIndex);
+        _currentLevel.Initialize();
     }
 
-    private void InstantiateLevel(Level level)
+    private void SaveData()
     {
-        if(currentLevelInstance != null)
+        PlayerPrefs.SetInt("level_index", _currentLevelIndex);
+    }
+
+    private Level InstantiateLevel(int index)
+    {
+        if (_currentLevel != null)
         {
-            Destroy(currentLevelInstance.gameObject);
+            Destroy(_currentLevel.gameObject);
         }
 
-        currentLevelInstance = Instantiate(level);
-        currentLevelInstance.Initialize();
+        if (index >= _allLevels.Count)
+        {
+            index = index % _allLevels.Count;
+        }
+
+        return Instantiate(_allLevels[index].gameObject, transform).GetComponent<Level>(); ;
+    }
+
+    private void InitializeUI()
+    {
+        _mainScreen.SetActive(true);
+        _gameScreen.gameObject.SetActive(false);
+        _winScreen.SetActive(false);
+    }
+
+    public void StartGame()
+    {
+        _mainScreen.SetActive(false);
+        _winScreen.SetActive(false);
+        _gameScreen.Initialize(_currentLevel);
+        _gameScreen.gameObject.SetActive(true);
+
+        _currentLevel.OnComplete += StopGame;
+    }
+
+    private void StopGame()
+    {
+        _gameScreen.gameObject.SetActive(false);
+        _winScreen.SetActive(true);
+
+        _currentLevelIndex++;
+        SaveData();
+    }
+
+    public void StartNewGame()
+    {
+        CreateLevel();
+        StartGame();
     }
 }
