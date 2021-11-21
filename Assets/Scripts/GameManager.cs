@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
     private const string LEVEL_SAVE_KEY = "level_index";
 
     [SerializeField] private LevelConfig levelConfig;
+    [SerializeField] private UIController uiController;
     
     private int _currentLevel;
     private Levels _currentLevelInstance;
@@ -35,6 +36,16 @@ public class GameManager : MonoBehaviour
         {
             InstantiateLevel(level);
         }
+        
+        uiController.InitializeLevel(_currentLevelInstance);
+        uiController.OnLevelComplete += NextLevel;
+    }
+
+    private void NextLevel()
+    {
+        _currentLevel++;
+        CurrentLevel = _currentLevel;
+        CreateLevel(_currentLevel);
     }
 
     private void InstantiateLevel(Levels level)

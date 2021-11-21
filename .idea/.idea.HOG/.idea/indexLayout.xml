@@ -54,6 +54,7 @@
     <explicitExcludes>
       <Path>.git</Path>
       <Path>.idea</Path>
+      <Path>Buld</Path>
       <Path>Library</Path>
       <Path>Logs</Path>
       <Path>Temp</Path>

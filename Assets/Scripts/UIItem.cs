@@ -25,7 +25,7 @@ public class UIItem : MonoBehaviour
     {
         if (--_count == 0)
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
         else
         {

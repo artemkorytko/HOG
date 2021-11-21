@@ -7,7 +7,7 @@ internal class GameItem : MonoBehaviour
 {
     [Header("General")]
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private string name = string.Empty;
+    [SerializeField] private new string name = string.Empty;
     [Header("Settings"), Space]
     [SerializeField] private float targetScaleModification = 1.2f;
     [SerializeField] private float scaleDuration = 0.5f;

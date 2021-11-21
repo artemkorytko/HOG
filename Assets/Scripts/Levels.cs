@@ -11,6 +11,7 @@ public class Levels : MonoBehaviour
     private int _itemCount = 0;
     public void Initialize()
     {
+        _gameItems?.Clear();
         _gameItems = new List<GameItem>(GetComponentsInChildren<GameItem>());
 
         foreach (var gameItem in _gameItems)
@@ -29,6 +30,7 @@ public class Levels : MonoBehaviour
         }
         else
         {
+            OnItemListChanged?.Invoke(name);
             OnComplete?.Invoke();
         }
     }

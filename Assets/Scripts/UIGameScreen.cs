@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UIGameScreen : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class UIGameScreen : MonoBehaviour
 
     public void Initialize(Levels levels)
     {
+        _uiItems.Clear();
         GenerateList(levels.GetItemDictionary());
         levels.OnItemListChanged += OnItemListChange;
     }
