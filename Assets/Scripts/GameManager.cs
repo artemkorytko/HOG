@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     {
         _currentLevel = CurrentLevel;
         CreateLevel(_currentLevel);
+        uiController.OnLevelComplete += NextLevel;
     }
 
     private void CreateLevel(int levelIndex)
@@ -38,14 +39,12 @@ public class GameManager : MonoBehaviour
         }
         
         uiController.InitializeLevel(_currentLevelInstance);
-        uiController.OnLevelComplete += NextLevel;
     }
 
     private void NextLevel()
     {
         _currentLevel++;
         CurrentLevel = _currentLevel;
-        uiController.OnLevelComplete -= NextLevel;
         CreateLevel(_currentLevel);
     }
 
