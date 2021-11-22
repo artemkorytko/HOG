@@ -23,13 +23,21 @@ public class UiItem : MonoBehaviour
     public void Decrease()
     {
        
-        if(--count == 0)
+      /*  if(--count == 0)
         {
             gameObject.SetActive(false);
         }
         else
         {
             counterText.text = count.ToString();
+        }*/
+
+        count--;
+        count = Mathf.Clamp(count, 0, int.MaxValue);
+        counterText.text = count.ToString();
+        if (count == 0)
+        {
+            gameObject.SetActive(false);
         }
     }
 }

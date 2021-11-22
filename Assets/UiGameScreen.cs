@@ -12,6 +12,12 @@ public class UiGameScreen : MonoBehaviour
 
     public void Initialize(Level level)
     {
+        foreach (var key in uiItems.Keys)
+        {
+            Destroy(uiItems[key].gameObject);
+        }
+        uiItems.Clear();
+
         GenerateList(level.GetItemDataDictionary());
         level.OnItemListChanged += OnItemListChange;
     }
@@ -28,12 +34,13 @@ public class UiGameScreen : MonoBehaviour
     {
         foreach (var key in dictionary.Keys)
         {
-            UiItem newItem = Instantiate(prefab, content).GetComponent<UiItem>();
+            GameObject newItem = Instantiate(prefab, content);
+            UiItem uiItem = newItem.GetComponent<UiItem>();
 
-            newItem.SetSprite(dictionary[key].Sprite);
-            newItem.SetCount(dictionary[key].Amount);
+            uiItem.SetSprite(dictionary[key].Sprite);
+            uiItem.SetCount(dictionary[key].Amount);
 
-            uiItems.Add(key, newItem);
+            uiItems.Add(key, uiItem);
         }
     }
 }
