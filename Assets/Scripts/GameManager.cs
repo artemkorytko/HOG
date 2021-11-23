@@ -15,7 +15,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UiGameScreen gameScreen = null;
     [SerializeField] private GameObject winScreen = null;
 
+    [Header("SOUNDS")]
+    [SerializeField] private AudioClip[] audioClips;
 
+    [Header("FX")]
+    [SerializeField] private GameObject fx;
+
+    private AudioSource audioSource;
     private int currentLevel;
     private Level currenLevelInstance;
    
@@ -23,6 +29,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         InitializeUI();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public int CurrentLevel
@@ -38,10 +45,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-       
-    }
 
     private void CreateLevel(int level)
     {
@@ -71,30 +74,40 @@ public class GameManager : MonoBehaviour
     }
     public void StartGame()
     {
-        Debug.Log("start" + currentLevel);
         mainScreen.SetActive(false);
         winScreen.SetActive(false);
         gameScreen.Initialize(currenLevelInstance);
         gameScreen.gameObject.SetActive(true);
 
         currenLevelInstance.OnComplete += StopGame;
+        currenLevelInstance.OnItemListChanged += OnListChanged;
+        fx.SetActive(false);
     }
+
+    private void OnListChanged(string obj)
+    {
+        PlaySound(0);
+    }
+
     private void StopGame()
     {
+        PlaySound(1);
         gameScreen.gameObject.SetActive(false);
         winScreen.SetActive(true);
-
-        currentLevel++;
+        //currentLevel++;
         CurrentLevel++;
-        Debug.Log("stop" + currentLevel);
-        //SaveData();
+        fx.SetActive(true);
     }
     public void StartNewGame()
     {
         currentLevel = CurrentLevel;
-        Debug.Log("StartNewGame " + currentLevel);
         CreateLevel(currentLevel);
         StartGame();
+        
+    }
+    private void PlaySound(int index)
+    {
+        audioSource.PlayOneShot(audioClips[index]);
     }
    
 }
